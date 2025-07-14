@@ -2,73 +2,6 @@ import * as validationService from "../util/validation";
 import { useActionState } from "react";
 
 export default function Signup() {
-  function signupAction(prevFormState, formData) {
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const confirmPassword = formData.get("confirm-password");
-    const firstName = formData.get("first-name");
-    const lastName = formData.get("last-name");
-    const role = formData.get("role");
-    const terms = formData.get("terms");
-    const acquisitionChannel = formData.getAll("acquisition");
-
-    let errors = [];
-
-    if (!validationService.isEmail(email)) {
-      errors.push("Invalid email address.");
-    }
-
-    if (
-      !validationService.isNotEmpty(password) ||
-      !validationService.hasMinLength(password, 6)
-    ) {
-      errors.push("Invalid password");
-    }
-
-    if (!validationService.isEqualToOtherValue(password, confirmPassword)) {
-      errors.push("Password must be equal");
-    }
-
-    if (
-      !validationService.isNotEmpty(firstName) ||
-      !validationService.isNotEmpty(lastName)
-    ) {
-      errors.push("Please provide both your first and last name");
-    }
-
-    if (!validationService.isNotEmpty(role)) {
-      errors.push("Please select a role.");
-    }
-
-    if (!terms) {
-      errors.push("You must agree to the terms and conditions");
-    }
-
-    if (acquisitionChannel.length === 0) {
-      errors.push("Please select at least one acquisitioin channel.");
-    }
-
-    if (errors.length > 0) {
-      return {
-        errors,
-      };
-    }
-
-    return {
-      errors: null,
-      enteredValues: {
-        email,
-        password,
-        confirmPassword,
-        firstName,
-        lastName,
-        role,
-        terms,
-        acquisitionChannel,
-      },
-    };
-  }
-
   const [formState, formAction, pending] = useActionState(signupAction, {
     errors: null,
   });
@@ -219,4 +152,71 @@ export default function Signup() {
       </p>
     </form>
   );
+}
+
+function signupAction(prevFormState, formData) {
+  const email = formData.get("email");
+  const password = formData.get("password");
+  const confirmPassword = formData.get("confirm-password");
+  const firstName = formData.get("first-name");
+  const lastName = formData.get("last-name");
+  const role = formData.get("role");
+  const terms = formData.get("terms");
+  const acquisitionChannel = formData.getAll("acquisition");
+
+  let errors = [];
+
+  if (!validationService.isEmail(email)) {
+    errors.push("Invalid email address.");
+  }
+
+  if (
+    !validationService.isNotEmpty(password) ||
+    !validationService.hasMinLength(password, 6)
+  ) {
+    errors.push("Invalid password");
+  }
+
+  if (!validationService.isEqualToOtherValue(password, confirmPassword)) {
+    errors.push("Password must be equal");
+  }
+
+  if (
+    !validationService.isNotEmpty(firstName) ||
+    !validationService.isNotEmpty(lastName)
+  ) {
+    errors.push("Please provide both your first and last name");
+  }
+
+  if (!validationService.isNotEmpty(role)) {
+    errors.push("Please select a role.");
+  }
+
+  if (!terms) {
+    errors.push("You must agree to the terms and conditions");
+  }
+
+  if (acquisitionChannel.length === 0) {
+    errors.push("Please select at least one acquisitioin channel.");
+  }
+
+  if (errors.length > 0) {
+    return {
+      errors,
+    };
+  }
+
+  return {
+    errors: null,
+    enteredValues: {
+      email,
+      password,
+      confirmPassword,
+      firstName,
+      lastName,
+      role,
+      terms,
+      acquisitionChannel,
+    },
+  };
 }
